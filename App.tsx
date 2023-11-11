@@ -1,10 +1,11 @@
 import React from 'react';
-import {SafeAreaView, Text} from 'react-native';
+import {SafeAreaView} from 'react-native';
+import Header from './components/Header';
 
 function App(): JSX.Element {
   return (
     <SafeAreaView>
-      <Text>Hello</Text>
+      <Header title="JUST DO IT" />
     </SafeAreaView>
   );
 }
