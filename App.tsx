@@ -8,7 +8,13 @@ function App(): JSX.Element {
   return (
     <SafeAreaView style={styles.app}>
       <Header title="JUST DO IT" />
-      <Todo title="title" desc="desc" color="red" isChecked={false} />
+      <Todo
+        title="title"
+        desc="desc"
+        color="red"
+        isChecked={false}
+        onSwipeDelete={() => {}}
+      />
       <AddButton handleClick={() => {}} />
     </SafeAreaView>
   );
