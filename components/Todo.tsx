@@ -36,7 +36,6 @@ function Todo({title, desc, color, isChecked, onSwipeDelete}: ITodoProps) {
             <Text style={{...styles.title, ...propsStyles.title}}>{title}</Text>
             <View style={{...styles.point, ...propsStyles.point}} />
           </View>
-
           <Text style={{...styles.desc, ...propsStyles.desc}}>{desc}</Text>
         </View>
         <BouncyCheckbox
@@ -56,11 +55,13 @@ const styles = StyleSheet.create({
   todo: {
     position: 'relative',
     borderRadius: 10,
-    width: '100%',
+    width: 350,
+    maxWidth: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 5,
     paddingHorizontal: 10,
+    marginVertical: 10,
   },
   text: {
     maxWidth: '70%',
