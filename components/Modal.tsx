@@ -113,7 +113,8 @@ export function Modal({modalVisible, setModalVisible}: IModalProps) {
                 setModalVisible(false);
               }}
               title="Cancel"
-              type="close"
+              type="outlined"
+              color="#a4161a"
             />
             <Button
               handleClick={() => {
@@ -124,7 +125,8 @@ export function Modal({modalVisible, setModalVisible}: IModalProps) {
                 setModalVisible(false);
               }}
               title="Create"
-              type="submit"
+              type="contained"
+              color="#eb5e28"
             />
           </View>
         </View>

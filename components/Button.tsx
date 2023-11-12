@@ -4,19 +4,24 @@ import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 export interface IButtonProps {
   handleClick: () => void;
   title: string;
-  type: 'submit' | 'close';
+  type: 'contained' | 'outlined';
+  color: string;
 }
 
-export function Button({handleClick, title, type}: IButtonProps) {
+export function Button({handleClick, title, type, color}: IButtonProps) {
   const buttonTypeStyles = {
     backgroundColor:
-      type === 'close' ? 'white' : type === 'submit' ? '#eb5e28' : 'white',
-    borderWidth: type === 'close' ? 1 : type === 'submit' ? 0 : 0,
-    borderColor:
-      type === 'close' ? '#a4161a' : type === 'submit' ? '#eb5e28' : 'white',
+      type === 'outlined' ? 'white' : type === 'contained' ? color : 'white',
+    borderWidth: type === 'outlined' ? 1 : type === 'contained' ? 0 : 0,
+    borderColor: color,
   };
   const textTypeStyles = {
-    color: type === 'close' ? '#a4161a' : type === 'submit' ? 'white' : 'white',
+    color:
+      type === 'outlined'
+        ? '#a4161a'
+        : type === 'contained'
+        ? 'white'
+        : 'white',
   };
 
   return (
