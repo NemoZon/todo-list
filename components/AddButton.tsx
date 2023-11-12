@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontSize: 28,
-    lineHeight: 28,
     textAlignVertical: 'center',
   },
 });
