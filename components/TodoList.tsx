@@ -1,52 +1,22 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import Todo from './Todo';
+import {stateType} from '../store';
+import {deleteTodo} from '../store/slices/todo';
 
 function TodoList() {
-  const [todoList, setTodoList] = useState([
-    {
-      id: 0,
-      title: 'title 1',
-      desc: 'desc 1',
-      color: 'red',
-      isChecked: false,
-    },
-    {
-      id: 1,
-      title: 'title 12',
-      desc: 'desc 12',
-      color: 'red',
-      isChecked: false,
-    },
-    {
-      id: 2,
-      title: 'title 2',
-      desc: 'desc 2',
-      color: 'red',
-      isChecked: false,
-    },
-    {
-      id: 3,
-      title: 'title 3',
-      desc: 'desc 3',
-      color: 'red',
-      isChecked: false,
-    },
-    {
-      id: 31,
-      title: 'title 3',
-      desc: 'desc 3',
-      color: 'red',
-      isChecked: false,
-    },
-  ]);
+  const dispatch = useDispatch();
+  const todoList = useSelector((state: stateType) => state.todoReducer.todos);
 
-  const deleteElement = useCallback((id: number) => {
-    setTimeout(
-      () => setTodoList(value => value.filter(elem => elem.id !== id)),
-      200,
-    );
-  }, []);
+  const deleteElement = useCallback(
+    (id: number) => {
+      setTimeout(() => {
+        dispatch(deleteTodo(id));
+      }, 200);
+    },
+    [dispatch],
+  );
 
   return (
     <ScrollView>

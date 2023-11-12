@@ -8,6 +8,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Button} from './Button';
+import {useSelector, useDispatch} from 'react-redux';
+import {stateType} from '../store';
+import {addTodo} from '../store/slices/todo';
 
 export interface IModalProps {
   modalVisible: boolean;
@@ -15,29 +18,32 @@ export interface IModalProps {
 }
 
 export function Modal({modalVisible, setModalVisible}: IModalProps) {
+  const dispatch = useDispatch();
   const [title, onChangeTitle] = useState('');
   const [desc, onChangeDesc] = useState('');
-  const [todoColors, setTodoColors] = useState([
-    {
-      color: '#1982c4',
-      active: true,
-    },
-    {
-      color: '#6a4c93',
-      active: false,
-    },
-    {
-      color: '#ffca3a',
-      active: false,
-    },
-    {
-      color: '#8ac926',
-      active: false,
-    },
-  ]);
-
-  const handleSubmit = (title: string, desc: string, color: string) => {};
-
+  const colors = useSelector((state: stateType) => state.todoReducer.colors);
+  const [todoColors, setTodoColors] = useState(
+    colors.map((color, index) => {
+      return {
+        color: color,
+        active: index === 0 ? true : false,
+      };
+    }),
+  );
+  const handleSubmit = (
+    titleValue: string,
+    descValue: string,
+    color: string,
+  ) => {
+    dispatch(
+      addTodo({
+        title: titleValue,
+        desc: descValue,
+        color: color,
+        isChecked: false,
+      }),
+    );
+  };
   const lengthVerification = useCallback((value: string, length: number) => {
     if (value.length <= length) {
       return true;
@@ -102,6 +108,8 @@ export function Modal({modalVisible, setModalVisible}: IModalProps) {
           <View style={styles.buttons}>
             <Button
               handleClick={() => {
+                onChangeTitle('');
+                onChangeDesc('');
                 setModalVisible(false);
               }}
               title="Cancel"
@@ -111,6 +119,8 @@ export function Modal({modalVisible, setModalVisible}: IModalProps) {
               handleClick={() => {
                 const color = todoColors.find(elem => elem.active);
                 handleSubmit(title, desc, color?.color || 'white');
+                onChangeTitle('');
+                onChangeDesc('');
                 setModalVisible(false);
               }}
               title="Create"

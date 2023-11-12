@@ -4,21 +4,25 @@ import Header from './components/Header';
 import AddButton from './components/AddButton';
 import TodoList from './components/TodoList';
 import Modal from './components/Modal';
+import {Provider} from 'react-redux';
+import store from './store';
 
 function App(): JSX.Element {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <SafeAreaView style={styles.app}>
-      <Header title="JUST DO IT" />
-      <TodoList />
-      <Modal modalVisible={modalVisible} setModalVisible={setModalVisible} />
-      <AddButton
-        handleClick={() => {
-          setModalVisible(!modalVisible);
-        }}
-      />
-    </SafeAreaView>
+    <Provider store={store}>
+      <SafeAreaView style={styles.app}>
+        <Header title="JUST DO IT" />
+        <TodoList />
+        <Modal modalVisible={modalVisible} setModalVisible={setModalVisible} />
+        <AddButton
+          handleClick={() => {
+            setModalVisible(!modalVisible);
+          }}
+        />
+      </SafeAreaView>
+    </Provider>
   );
 }
 
