@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {ScrollView, StyleSheet, Text} from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import Todo from './Todo';
 
 function TodoList() {
@@ -39,83 +39,6 @@ function TodoList() {
       color: 'red',
       isChecked: false,
     },
-    {
-      id: 32,
-      title: 'title 3',
-      desc: 'desc 3',
-      color: 'red',
-      isChecked: false,
-    },
-    {
-      id: 33,
-      title: 'title 3',
-      desc: 'desc 3',
-      color: 'red',
-      isChecked: false,
-    },
-    {
-      id: 34,
-      title: 'title 3',
-      desc: 'desc 3',
-      color: 'red',
-      isChecked: false,
-    },
-    {
-      id: 35,
-      title: 'title 3',
-      desc: 'desc 3',
-      color: 'red',
-      isChecked: false,
-    },
-    {
-      id: 36,
-      title: 'title 3',
-      desc: 'desc 3',
-      color: 'red',
-      isChecked: false,
-    },
-    {
-      id: 37,
-      title: 'title 3',
-      desc: 'desc 3',
-      color: 'red',
-      isChecked: false,
-    },
-    {
-      id: 38,
-      title: 'title 3',
-      desc: 'desc 3',
-      color: 'red',
-      isChecked: false,
-    },
-    {
-      id: 39,
-      title: 'title 3',
-      desc: 'desc 3',
-      color: 'red',
-      isChecked: false,
-    },
-    {
-      id: 311,
-      title: 'title 3',
-      desc: 'desc 3',
-      color: 'red',
-      isChecked: false,
-    },
-    {
-      id: 312,
-      title: 'title 3',
-      desc: 'desc 3',
-      color: 'red',
-      isChecked: false,
-    },
-    {
-      id: 313,
-      title: 'title 3',
-      desc: 'desc 3',
-      color: 'red',
-      isChecked: false,
-    },
   ]);
 
   const deleteElement = useCallback((id: number) => {
@@ -126,28 +49,30 @@ function TodoList() {
   }, []);
 
   return (
-    <ScrollView style={styles.container}>
-      {todoList && todoList.length > 0 ? (
-        todoList.map(({id, title, desc, color, isChecked}) => (
-          <Todo
-            key={id}
-            title={title}
-            desc={desc}
-            color={color}
-            isChecked={isChecked}
-            onSwipeDelete={() => deleteElement(id)}
-          />
-        ))
-      ) : (
-        <Text style={styles.noTodos}>Everything is done 🎉</Text>
-      )}
+    <ScrollView>
+      <View style={styles.container}>
+        {todoList && todoList.length > 0 ? (
+          todoList.map(({id, title, desc, color, isChecked}) => (
+            <Todo
+              key={id}
+              title={title}
+              desc={desc}
+              color={color}
+              isChecked={isChecked}
+              onSwipeDelete={() => deleteElement(id)}
+            />
+          ))
+        ) : (
+          <Text style={styles.noTodos}>Everything is done 🎉</Text>
+        )}
+      </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
   },

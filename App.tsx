@@ -3,7 +3,6 @@ import {SafeAreaView, StyleSheet} from 'react-native';
 import Header from './components/Header';
 import AddButton from './components/AddButton';
 import TodoList from './components/TodoList';
-import Todo from './components/Todo';
 
 function App(): JSX.Element {
   return (
