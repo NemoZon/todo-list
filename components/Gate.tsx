@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchTodos, storeTodos} from '../store/slices/todo';
+import {addTodo, fetchTodos, storeTodos} from '../store/slices/todo';
 import {AppDispatch, stateType} from '../store';
 import uuid from 'react-native-uuid';
 
@@ -19,16 +19,11 @@ export function Gate({children}: IGateProps) {
       if (!fetchTodosRes) {
         if (todos.length === 0) {
           dispatch(
-            storeTodos({
-              todos: [
-                {
-                  id: uuid.v4(),
-                  title: 'Write things to do for today',
-                  desc: 'Click on the "plus" button, then fill in the fields and click "create"',
-                  color: '#1982c4',
-                  isChecked: false,
-                },
-              ],
+            addTodo({
+              title: 'Write things to do for today',
+              desc: 'Click on the "plus" button, then fill in the fields and click "create"',
+              color: '#1982c4',
+              isChecked: false,
             }),
           );
         } else {
