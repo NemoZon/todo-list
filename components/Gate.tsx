@@ -3,6 +3,7 @@ import {StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchTodos, storeTodos} from '../store/slices/todo';
 import {AppDispatch, stateType} from '../store';
+import uuid from 'react-native-uuid';
 
 export interface IGateProps {
   children: JSX.Element[] | JSX.Element;
@@ -21,7 +22,7 @@ export function Gate({children}: IGateProps) {
             storeTodos({
               todos: [
                 {
-                  id: 0,
+                  id: uuid.v4(),
                   title: 'Write things to do for today',
                   desc: 'Click on the "plus" button, then fill in the fields and click "create"',
                   color: '#1982c4',

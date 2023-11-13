@@ -1,8 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import uuid from 'react-native-uuid';
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 
 interface Todo {
-  id: number;
+  id: string | number[];
   title: string;
   desc: string;
   color: string;
@@ -32,18 +33,16 @@ export const storeTodos = createAsyncThunk(
 );
 
 const initialState: {
-  status: string;
+  status: string | number[];
   error: unknown;
   order: undefined | 'ASC' | 'DESC';
   todos: Todo[];
-  lastId: number;
   colors: string[];
 } = {
   status: 'idle',
   error: null,
   order: undefined,
   todos: [],
-  lastId: -1, // change to uuid
   colors: ['#1982c4', '#6a4c93', '#ffca3a', '#8ac926'],
 };
 
@@ -52,12 +51,10 @@ const todosSlice = createSlice({
   initialState,
   reducers: {
     addTodo(state, action) {
-      state.lastId = state.lastId + 1;
-      state.todos = [...state.todos, {...action.payload, id: state.lastId}];
+      state.todos = [...state.todos, {...action.payload, id: uuid.v4()}];
     },
     deleteTodo(state, action) {
       state.todos = state.todos.filter(todo => todo.id !== action.payload);
-      state.lastId = state.todos[state.todos.length - 1]?.id || -1;
     },
     changeIsChecked(state, action) {
       state.todos = state.todos.map(todo => {
@@ -75,7 +72,6 @@ const todosSlice = createSlice({
     },
     deleteAllTodos(state) {
       state.todos = [];
-      state.lastId = -1;
     },
     sortByChecked(state) {
       if (state.order === 'ASC') {
@@ -98,8 +94,6 @@ const todosSlice = createSlice({
         state.status = 'succeeded';
         if (action.payload) {
           state.todos = action.payload.todos;
-          state.lastId =
-            action.payload.todos[action.payload.todos.length - 1].id;
         }
       })
       .addCase(fetchTodos.rejected, (state, action) => {

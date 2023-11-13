@@ -9,7 +9,7 @@ function TodoList() {
   const dispatch = useDispatch<AppDispatch>();
   const todoList = useSelector((state: stateType) => state.todoReducer.todos);
   const deleteElement = useCallback(
-    (id: number) => {
+    (id: string) => {
       setTimeout(() => {
         dispatch(deleteTodo(id));
       }, 200);

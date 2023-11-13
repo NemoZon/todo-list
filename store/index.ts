@@ -12,13 +12,12 @@ export interface stateType {
   todoReducer: {
     order: undefined | 'ASC' | 'DESC';
     todos: Array<{
-      id: number;
+      id: string;
       title: string;
       desc: string;
       color: string;
       isChecked: boolean;
     }>;
-    lastId: number;
     colors: Array<string>;
   };
 }
