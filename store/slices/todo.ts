@@ -98,7 +98,6 @@ const todosSlice = createSlice({
         state.status = 'succeeded';
         if (action.payload) {
           state.todos = action.payload.todos;
-
           state.lastId =
             action.payload.todos[action.payload.todos.length - 1].id;
         }

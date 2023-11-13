@@ -19,6 +19,10 @@ export interface IModalProps {
 
 export function Modal({modalVisible, setModalVisible}: IModalProps) {
   const dispatch = useDispatch<AppDispatch>();
+  const [isFormValid, setIsFormValid] = useState<null | {
+    isError: boolean;
+    message: string;
+  }>(null);
   const [title, onChangeTitle] = useState('');
   const [desc, onChangeDesc] = useState('');
   const colors = useSelector((state: stateType) => state.todoReducer.colors);
@@ -44,10 +48,34 @@ export function Modal({modalVisible, setModalVisible}: IModalProps) {
     [dispatch],
   );
 
+  const handleCreate = () => {
+    const color = todoColors.find(elem => elem.active);
+    if (title.length === 0 && desc.length === 0) {
+      setIsFormValid({
+        isError: true,
+        message: 'You must fill in at least one field',
+      });
+    } else {
+      handleSubmit(title, desc, color?.color || 'white');
+      onChangeTitle('');
+      onChangeDesc('');
+      setModalVisible(false);
+      setIsFormValid(null);
+    }
+  };
+
   const lengthVerification = useCallback((value: string, length: number) => {
     if (value.length <= length) {
+      setIsFormValid({
+        isError: false,
+        message: 'Great title and description',
+      });
       return true;
     }
+    setIsFormValid({
+      isError: true,
+      message: 'Sorry, this is the maximum allowed value',
+    });
     return false;
   }, []);
 
@@ -63,6 +91,18 @@ export function Modal({modalVisible, setModalVisible}: IModalProps) {
         <View style={styles.modalView}>
           <Text style={styles.title}>Create a new task</Text>
           <View style={styles.inputs}>
+            {isFormValid ? (
+              <Text
+                // eslint-disable-next-line react-native/no-inline-styles
+                style={{
+                  fontSize: 12,
+                  color: isFormValid.isError ? 'red' : 'green',
+                }}>
+                {isFormValid.message}
+              </Text>
+            ) : (
+              ''
+            )}
             <TextInput
               style={styles.input}
               placeholder="Title"
@@ -73,9 +113,9 @@ export function Modal({modalVisible, setModalVisible}: IModalProps) {
             />
             <TextInput
               style={styles.input}
-              onChangeText={value =>
-                lengthVerification(value, 100) ? onChangeDesc(value) : ''
-              }
+              onChangeText={value => {
+                lengthVerification(value, 100) ? onChangeDesc(value) : '';
+              }}
               value={desc}
               placeholder="Description"
             />
@@ -117,13 +157,7 @@ export function Modal({modalVisible, setModalVisible}: IModalProps) {
               color="#a4161a"
             />
             <Button
-              handleClick={() => {
-                const color = todoColors.find(elem => elem.active);
-                handleSubmit(title, desc, color?.color || 'white');
-                onChangeTitle('');
-                onChangeDesc('');
-                setModalVisible(false);
-              }}
+              handleClick={handleCreate}
               title="Create"
               type="contained"
               color="#eb5e28"
