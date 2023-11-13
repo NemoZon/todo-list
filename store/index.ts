@@ -10,6 +10,7 @@ const store = configureStore({
 
 export interface stateType {
   todoReducer: {
+    order: undefined | 'ASC' | 'DESC';
     todos: Array<{
       id: number;
       title: string;

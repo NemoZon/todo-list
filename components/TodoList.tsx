@@ -3,7 +3,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import Todo from './Todo';
 import {stateType} from '../store';
-import {deleteTodo} from '../store/slices/todo';
+import {changeIsChecked, deleteTodo} from '../store/slices/todo';
 
 function TodoList() {
   const dispatch = useDispatch();
@@ -29,6 +29,9 @@ function TodoList() {
               desc={desc}
               color={color}
               isChecked={isChecked}
+              handleCheckboxClick={value => {
+                dispatch(changeIsChecked({id: id, isChecked: value}));
+              }}
               onSwipeDelete={() => deleteElement(id)}
             />
           ))

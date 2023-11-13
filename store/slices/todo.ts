@@ -1,6 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
+  order: undefined,
   todos: [
     {
       id: 0,
@@ -26,13 +27,46 @@ const todosSlice = createSlice({
       state.todos = state.todos.filter(todo => todo.id !== action.payload);
       state.lastId = state.todos[state.todos.length - 1]?.id || -1;
     },
+    changeIsChecked(state, action) {
+      state.todos = state.todos.map(todo => {
+        if (todo.id === action.payload.id) {
+          return {
+            ...todo,
+            isChecked: action.payload.isChecked,
+          };
+        }
+        return todo;
+      });
+    },
+    setOrder(state, action) {
+      state.order = action.payload;
+    },
     deleteAllTodos(state) {
       state.todos = [];
       state.lastId = -1;
     },
+    sortByChecked(state) {
+      if (state.order === 'ASC') {
+        state.todos = state.todos.slice().sort((a, b) => {
+          return a.isChecked === b.isChecked ? 0 : a.isChecked ? -1 : 1;
+        });
+      } else if (state.order === 'DESC') {
+        state.todos = state.todos.slice().sort((a, b) => {
+          return a.isChecked === b.isChecked ? 0 : b.isChecked ? -1 : 1;
+        });
+      }
+      console.log(state.todos);
+    },
   },
 });
 
-export const {addTodo, deleteTodo, deleteAllTodos} = todosSlice.actions;
+export const {
+  addTodo,
+  deleteTodo,
+  deleteAllTodos,
+  sortByChecked,
+  changeIsChecked,
+  setOrder,
+} = todosSlice.actions;
 
 export default todosSlice.reducer;

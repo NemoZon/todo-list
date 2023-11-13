@@ -2,16 +2,26 @@ import React, {useState} from 'react';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {StyleSheet, View, Text} from 'react-native';
 import SwipeToDelete from './SwipeToDelete';
-
+import {useDispatch} from 'react-redux';
+import {sortByChecked} from '../store/slices/todo';
 export interface ITodoProps {
   title: string;
   desc: string;
   color: string;
   isChecked: boolean;
   onSwipeDelete: () => void;
+  handleCheckboxClick: (value: boolean) => void;
 }
 
-function Todo({title, desc, color, isChecked, onSwipeDelete}: ITodoProps) {
+function Todo({
+  title,
+  desc,
+  color,
+  isChecked,
+  onSwipeDelete,
+  handleCheckboxClick,
+}: ITodoProps) {
+  const dispatch = useDispatch();
   const [isDone, setIsDone] = useState(isChecked);
   const propsStyles = {
     todo: {
@@ -42,6 +52,8 @@ function Todo({title, desc, color, isChecked, onSwipeDelete}: ITodoProps) {
           fillColor="#2b9348"
           unfillColor="transparent"
           onPress={value => {
+            handleCheckboxClick(value);
+            dispatch(sortByChecked());
             setIsDone(value);
           }}
           isChecked={isDone}

@@ -6,9 +6,10 @@ export interface IButtonProps {
   title: string;
   type: 'contained' | 'outlined';
   color: string;
+  icon?: JSX.Element;
 }
 
-export function Button({handleClick, title, type, color}: IButtonProps) {
+export function Button({handleClick, title, type, color, icon}: IButtonProps) {
   const buttonTypeStyles = {
     backgroundColor:
       type === 'outlined' ? 'white' : type === 'contained' ? color : 'white',
@@ -29,6 +30,7 @@ export function Button({handleClick, title, type, color}: IButtonProps) {
       style={[styles.button, buttonTypeStyles]}
       onPress={handleClick}>
       <Text style={[styles.textStyle, textTypeStyles]}>{title}</Text>
+      {icon ? icon : ''}
     </TouchableOpacity>
   );
 }
@@ -39,8 +41,13 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    columnGap: 5,
   },
   textStyle: {
+    fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
   },
