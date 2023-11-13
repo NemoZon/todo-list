@@ -1,17 +1,49 @@
-import {createSlice} from '@reduxjs/toolkit';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 
-const initialState = {
+interface Todo {
+  id: number;
+  title: string;
+  desc: string;
+  color: string;
+  isChecked: boolean;
+}
+
+export const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem('todos');
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch (e) {
+    console.error('Fetch todos error: ', e);
+  }
+});
+
+export const storeTodos = createAsyncThunk(
+  'todos/storeTodos',
+  async (value: {todos: Todo[]}) => {
+    try {
+      const jsonValue = JSON.stringify(value);
+
+      await AsyncStorage.setItem('todos', jsonValue);
+    } catch (e) {
+      console.error('Fetch todos error: ', e);
+    }
+  },
+);
+
+const initialState: {
+  status: string;
+  error: unknown;
+  order: undefined | 'ASC' | 'DESC';
+  todos: Todo[];
+  lastId: number;
+  colors: string[];
+} = {
+  status: 'idle',
+  error: null,
   order: undefined,
-  todos: [
-    {
-      id: 0,
-      title: 'Write things to do for today',
-      desc: 'Click on the "plus" button, then fill in the fields and click "create"',
-      color: '#1982c4',
-      isChecked: false,
-    },
-  ],
-  lastId: 0,
+  todos: [],
+  lastId: -1, // change to uuid
   colors: ['#1982c4', '#6a4c93', '#ffca3a', '#8ac926'],
 };
 
@@ -55,8 +87,26 @@ const todosSlice = createSlice({
           return a.isChecked === b.isChecked ? 0 : b.isChecked ? -1 : 1;
         });
       }
-      console.log(state.todos);
     },
+  },
+  extraReducers: builder => {
+    builder
+      .addCase(fetchTodos.pending, state => {
+        state.status = 'loading';
+      })
+      .addCase(fetchTodos.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        if (action.payload) {
+          state.todos = action.payload.todos;
+
+          state.lastId =
+            action.payload.todos[action.payload.todos.length - 1].id;
+        }
+      })
+      .addCase(fetchTodos.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      });
   },
 });
 

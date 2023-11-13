@@ -25,7 +25,7 @@ function Todo({
   const [isDone, setIsDone] = useState(isChecked);
   const propsStyles = {
     todo: {
-      backgroundColor: isDone ? '#2b9348' : 'white',
+      backgroundColor: isDone ? '#a7c957' : 'white',
     },
     title: {
       color: isDone ? 'white' : 'black',

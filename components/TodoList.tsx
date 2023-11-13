@@ -2,13 +2,12 @@ import React, {useCallback} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import Todo from './Todo';
-import {stateType} from '../store';
+import {AppDispatch, stateType} from '../store';
 import {changeIsChecked, deleteTodo} from '../store/slices/todo';
 
 function TodoList() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const todoList = useSelector((state: stateType) => state.todoReducer.todos);
-
   const deleteElement = useCallback(
     (id: number) => {
       setTimeout(() => {

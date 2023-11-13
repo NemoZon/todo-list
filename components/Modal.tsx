@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {Button} from './Button';
 import {useSelector, useDispatch} from 'react-redux';
-import {stateType} from '../store';
+import {AppDispatch, stateType} from '../store';
 import {addTodo} from '../store/slices/todo';
 
 export interface IModalProps {
@@ -18,7 +18,7 @@ export interface IModalProps {
 }
 
 export function Modal({modalVisible, setModalVisible}: IModalProps) {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [title, onChangeTitle] = useState('');
   const [desc, onChangeDesc] = useState('');
   const colors = useSelector((state: stateType) => state.todoReducer.colors);
@@ -30,20 +30,20 @@ export function Modal({modalVisible, setModalVisible}: IModalProps) {
       };
     }),
   );
-  const handleSubmit = (
-    titleValue: string,
-    descValue: string,
-    color: string,
-  ) => {
-    dispatch(
-      addTodo({
-        title: titleValue,
-        desc: descValue,
-        color: color,
-        isChecked: false,
-      }),
-    );
-  };
+  const handleSubmit = useCallback(
+    (titleValue: string, descValue: string, color: string) => {
+      dispatch(
+        addTodo({
+          title: titleValue,
+          desc: descValue,
+          color: color,
+          isChecked: false,
+        }),
+      );
+    },
+    [dispatch],
+  );
+
   const lengthVerification = useCallback((value: string, length: number) => {
     if (value.length <= length) {
       return true;

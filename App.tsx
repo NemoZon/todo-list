@@ -7,6 +7,7 @@ import Modal from './components/Modal';
 import {Provider} from 'react-redux';
 import store from './store';
 import {SortableButton} from './components/SortableButton';
+import {Gate} from './components/Gate';
 
 function App(): JSX.Element {
   const [modalVisible, setModalVisible] = useState(false);
@@ -14,15 +15,20 @@ function App(): JSX.Element {
   return (
     <Provider store={store}>
       <SafeAreaView style={styles.app}>
-        <Header title="JUST DO IT" />
-        <TodoList />
-        <Modal modalVisible={modalVisible} setModalVisible={setModalVisible} />
-        <AddButton
-          handleClick={() => {
-            setModalVisible(!modalVisible);
-          }}
-        />
-        <SortableButton />
+        <Gate>
+          <Header title="JUST DO IT" />
+          <TodoList />
+          <Modal
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+          />
+          <AddButton
+            handleClick={() => {
+              setModalVisible(!modalVisible);
+            }}
+          />
+          <SortableButton />
+        </Gate>
       </SafeAreaView>
     </Provider>
   );
