@@ -21,6 +21,12 @@ const SwipeToDelete = ({children, onSwipeDelete}: ISwipeToDeleteProps) => {
           toValue: {x: 500, y: 0},
           useNativeDriver: false,
         }).start();
+      } else if (gesture.dx < -120) {
+        onSwipeDelete();
+        Animated.spring(pan, {
+          toValue: {x: -500, y: 0},
+          useNativeDriver: false,
+        }).start();
       } else {
         Animated.spring(pan, {
           toValue: {x: 0, y: 0},
